@@ -41,6 +41,7 @@ def main(
         start_money,
         bet_unit,
         pocket_unit,
+        rounds_per_hour,
     ):    
     sum_money_trials = 0
     moneys = []
@@ -55,6 +56,7 @@ def main(
     perc_start = avg_win / start_money
     avg_rounds = sum(rounds) * 1.0 / trials
     money_per_round = sum([money * 1.0 / rounds[i] for i, money in enumerate(moneys)]) / trials
+    playtime = int((avg_rounds / rounds_per_hour) * 60)
     print(
     """
     Num Trials:\t{trials}
@@ -62,8 +64,9 @@ def main(
     % Start $:\t{perc_start}%
     Avg rounds:\t{avg_rounds}
     Money per round:\t{money_per_round}
+    Play time:\t{playtime} mins
     """
-        .format(trials=trials, avg_win=avg_win, perc_start=perc_start * 100, avg_rounds=avg_rounds, money_per_round=money_per_round)
+        .format(trials=trials, avg_win=avg_win, perc_start=perc_start * 100, avg_rounds=avg_rounds, money_per_round=money_per_round, playtime=playtime)
     )
 
 if __name__ == '__main__':
@@ -74,10 +77,12 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--start-money', type=float, default=8.0)
     parser.add_argument('-b', '--bet-unit', type=float, default=1.0) 
     parser.add_argument('-o', '--pocket-unit', type=float, default=1.0)
+    parser.add_argument('-r', '--rounds-per-hour', type=int, default=100)
     args = parser.parse_args()
     main(args.trials, 
          args.prob_win,
          args.prob_push,
          args.start_money,
          args.bet_unit,
-         args.pocket_unit)
+         args.pocket_unit,
+         args.rounds_per_hour)
